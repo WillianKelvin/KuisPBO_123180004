@@ -1,6 +1,8 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -12,7 +14,7 @@ import javax.swing.JTable;
 
 /**
  *
- * @author ASUS
+ * @author Willian Kelvin Nata - 123180004
  */
 public class Controller {
     MenuView menuview;
@@ -32,11 +34,31 @@ public class Controller {
             JOptionPane.showMessageDialog(null, "Data Tidak Ada");
         }
         
+        menuview.tabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                super.mousePressed(e);
+                int baris = menuview.tabel.getSelectedRow();
+                int kolom = menuview.tabel.getSelectedColumn();
+                
+                String judul = menuview.tabel.getValueAt(baris, 2).toString();
+                menuview.txjudul.setText(judul);
+                String tipe = menuview.tabel.getValueAt(baris, 3).toString();
+                menuview.txtipe.setText(tipe);
+                String episode = menuview.tabel.getValueAt(baris, 4).toString();
+                menuview.txepisode.setText(episode);
+                String genre = menuview.tabel.getValueAt(baris, 5).toString();
+                menuview.txgenre.setText(genre);
+                String rating = menuview.tabel.getValueAt(baris, 7).toString();
+                menuview.txrating.setText(rating);
+           }
+        });
+        
         menuview.brefresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String dataInti[][] = dao.read();
-                menuview.tabel.setModel((new JTable(dataInti, menuview.namaKolom)).getModel());
+                String dataFilm[][] = dao.read();
+                menuview.tabel.setModel((new JTable(dataFilm, menuview.namaKolom)).getModel());
             }
         });
         
@@ -57,7 +79,7 @@ public class Controller {
                     JOptionPane.showMessageDialog(null, "Harap Mengisi Semua Field");
                 } else {
                     //memasukkan data kedalam model
-                    model.setModel(judul, tipe, episode,status, genre, rating);
+                    model.setModel(judul, tipe, episode,status, genre, rating,cari);
                     //menjalankan perintah insert di DAO
                     dao.Insert(model);
 
@@ -76,11 +98,11 @@ public class Controller {
                 String genre = menuview.getGenre();
                 String status = menuview.getStatus();
                 String rating = menuview.getRating();
-                //String cari = menuview.getCari();
+                String cari = menuview.getCari();
                 if(judul.isEmpty() || tipe.isEmpty() || episode.isEmpty() || genre.isEmpty() || status.isEmpty() || rating.isEmpty()){
                    JOptionPane.showMessageDialog(null, "Harap Isi Semua Field");
                }else{
-                    model.setModel(judul, tipe, episode,genre, status, rating);
+                    model.setModel(judul, tipe, episode,genre, status, rating,cari);
                     dao.Update(model);
                     
                     String dataFilm[][] = dao.read();
@@ -98,11 +120,11 @@ public class Controller {
                 String genre = menuview.getGenre();
                 String status = menuview.getStatus();
                 String rating = menuview.getRating();
-//                String cari = menuview.getCari();
+                String cari = menuview.getCari();
                 if(judul.isEmpty() || tipe.isEmpty() || episode.isEmpty() || genre.isEmpty() || status.isEmpty() || rating.isEmpty()){
                    JOptionPane.showMessageDialog(null, "Harap Isi Semua Field");
                }else{
-                    model.setModel(judul, tipe, episode,genre, status, rating);
+                    model.setModel(judul, tipe, episode,genre, status, rating,cari);
                     dao.Delete(model);
                     
                     String dataFilm[][] = dao.read();
@@ -118,24 +140,24 @@ public class Controller {
             }
         });
         
-//        menuview.bsearch.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                String judul = menuview.getJudul();
-//                String tipe = menuview.getTipe();
-//                String episode = menuview.getEpisode();
-//                String genre = menuview.getGenre();
-//                String status = menuview.getStatus();
-//                String rating = menuview.getRating();
-//                String cari = menuview.getCari();
-//                if(cari.isEmpty()){
-//                   JOptionPane.showMessageDialog(null, "Harap Isi Data yang Ingin Dicari");
-//               }else{
-//                    model.setModel(judul, tipe, status, episode, rating, genre, cari);
-//                    dao.searchData(model);
-//                }
-//            }
-//        });
+        menuview.bsearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String judul = menuview.getJudul();
+                String tipe = menuview.getTipe();
+                String episode = menuview.getEpisode();
+                String genre = menuview.getGenre();
+                String status = menuview.getStatus();
+                String rating = menuview.getRating();
+                String cari = menuview.getCari();
+                if(cari.isEmpty()){
+                   JOptionPane.showMessageDialog(null, "Harap Isi Data yang Ingin Dicari");
+               }else{
+                    model.setModel(judul, tipe, episode, genre, status, rating, cari);
+                    dao.Search(model);
+                }
+            }
+        });
         
     }
 }
