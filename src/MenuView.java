@@ -146,7 +146,7 @@ public class MenuView extends JFrame {
         return txgenre.getText();
     }
     
-    public String getSearch(){
+    public String getCari(){
         return txsearch.getText();
     }
     
