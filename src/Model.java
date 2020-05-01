@@ -9,9 +9,9 @@
  * @author Willian Kelvin Nata - 123180004
  */
 public class Model { 
-    private String judul,tipe,episode, genre, status, rating;
+    private String judul,tipe,episode, genre, status, rating,cari;
     
-    public void setModel(String njudul, String ntipe, String nepisode,String ngenre, String nstatus, String nrating){
+    public void setModel(String njudul, String ntipe, String nepisode,String ngenre, String nstatus, String nrating, String ncari){
 //        this.no = nno;
 //        this.id = nid;
         this.judul = njudul;
@@ -20,6 +20,7 @@ public class Model {
         this.genre = ngenre;
         this.status = nstatus;
         this.rating = nrating;
+        this.cari = ncari;
     }
 //    public String getNo(){
 //        return no;
@@ -75,6 +76,13 @@ public class Model {
     }
     public void setRating(String rating){
         this.rating = rating;
+    }
+    
+     public String getCari(){
+        return cari;
+    }
+    public void setCari(String cari){
+        this.cari = cari;
     }
     
 }
